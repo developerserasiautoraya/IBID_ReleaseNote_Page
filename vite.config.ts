@@ -14,14 +14,15 @@ export default defineConfig(({ mode }) => {
           target: "https://serasiautoraya.atlassian.net",
           changeOrigin: true,
           secure: true,
-          rewrite: (path) =>
-            path.replace(/^\/api\/confluence/, "/wiki/api/v2"),
+          rewrite: (path) => path.replace(/^\/api\/confluence/, "/wiki/api/v2"),
           configure: (proxy) => {
+            proxy.on("proxyReq", (proxyReq, req) => {
+              proxyReq.setHeader("Origin", "https://serasiautoraya.atlassian.net");
+              proxyReq.setHeader("Referer", "https://serasiautoraya.atlassian.net/wiki");
+              console.log("Proxying:", req.url, "->", proxyReq.getHeader("host"));
+            });
             proxy.on("error", (err) => {
               console.error("Proxy error:", err);
-            });
-            proxy.on("proxyReq", (proxyReq) => {
-              console.log("Proxying request to:", proxyReq.getHeader("host"));
             });
           },
         },
@@ -31,7 +32,8 @@ export default defineConfig(({ mode }) => {
       __CONFLUENCE_BASE_URL__: JSON.stringify(
         mode === "development"
           ? "/api/confluence"
-          : env.VITE_CONFLUENCE_BASE_URL || "https://serasiautoraya.atlassian.net/wiki/api/v2"
+          : env.VITE_CONFLUENCE_BASE_URL ||
+            "https://serasiautoraya.atlassian.net/wiki/api/v2"
       ),
     },
   };
