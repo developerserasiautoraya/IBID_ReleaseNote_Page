@@ -10,14 +10,14 @@ export default defineConfig(() => {
     server: {
       proxy: {
         "/api/confluence": {
-          target: "https://serasiautoraya.atlassian.net",
+          target: "https://enterprise-api-dev.sera.astra.co.id",
           changeOrigin: true,
           secure: true,
           rewrite: (path) => path.replace(/^\/api\/confluence/, "/wiki/api/v2"),
           configure: (proxy) => {
             proxy.on("proxyReq", (proxyReq, req) => {
-              proxyReq.setHeader("Origin", "https://serasiautoraya.atlassian.net");
-              proxyReq.setHeader("Referer", "https://serasiautoraya.atlassian.net/wiki");
+              proxyReq.setHeader("Origin", "https://enterprise-api-dev.sera.astra.co.id");
+              proxyReq.setHeader("Referer", "https://enterprise-api-dev.sera.astra.co.id/wiki");
               console.log("Proxying:", req.url, "->", proxyReq.getHeader("host"));
             });
             proxy.on("error", (err) => {
