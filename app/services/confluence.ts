@@ -6,10 +6,11 @@ export class ConfluenceApi {
 
   constructor() {
     this.api = axios.create({
-      baseURL: '/api/confluence',
+      baseURL: 'https://enterprise-api-dev.sera.astra.co.id/confluence/wiki/api/v2',
       headers: {
         'Accept': 'application/json',
-        'Authorization': `Basic ${btoa(`${import.meta.env.VITE_CONFLUENCE_EMAIL}:${import.meta.env.VITE_CONFLUENCE_API_TOKEN}`)}`
+        'Authorization': `Basic ${btoa(`${import.meta.env.VITE_CONFLUENCE_EMAIL}:${import.meta.env.VITE_CONFLUENCE_API_TOKEN}`)}`,
+        'ocp-apim-subscription-key': `${import.meta.env.VITE_APIM}`
       }
     })
 
